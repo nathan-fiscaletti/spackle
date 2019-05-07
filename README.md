@@ -2,8 +2,8 @@
 > A simple templating engine for PHP
 
 [![StyleCI](https://styleci.io/repos/185454892/shield?style=flat)](https://styleci.io/repos/185454892)
-[![Latest Stable Version](https://poser.pugx.org/nafisc/spackle/v/stable?format=flat)](https://packagist.org/packages/nafisc/spackle)
 [![Total Downloads](https://poser.pugx.org/nafisc/spackle/downloads?format=flat)](https://packagist.org/packages/nafisc/spackle)
+[![Latest Stable Version](https://poser.pugx.org/nafisc/spackle/v/stable?format=flat)](https://packagist.org/packages/nafisc/spackle)
 [![Latest Unstable Version](https://poser.pugx.org/nafisc/spackle/v/unstable?format=flat)](https://packagist.org/packages/nafisc/paraspacklemeterparser)
 [![License](https://poser.pugx.org/nafisc/spackle/license?format=flat)](https://packagist.org/packages/nafisc/spackle)
 
