@@ -132,3 +132,13 @@ Bound: Yes, Bound.
 ```
 
 > (You can find this example in [./example/](./example/)
+
+## Why stop there?
+
+You can use Spackle for any file type you want, since it's a glorified regex matcher.
+
+For example, JavaScript:
+
+```js
+console.log("Hello, {{name}}!");
+```
