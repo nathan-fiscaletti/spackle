@@ -107,7 +107,7 @@ class TemplateParser
         $output = $this->content;
         $matches = [];
         preg_match_all('/(?!>|url)(?<={{)(.*)(?=}})(?!<|url)/Us', $output, $matches);
-        
+
         foreach ($matches[0] as $substitution) {
             if (strpos($output, '{{'.$substitution.'}}') !== false) {
                 $result = $this->substitutions[$substitution];
