@@ -2,13 +2,11 @@
 
 namespace Spackle;
 
-use Spackle\TemplateParser;
-
 class FileParser extends TemplateParser
 {
     /**
-     * Construct the FileParser
-     * 
+     * Construct the FileParser.
+     *
      * @param string $file          The path to the Template file.
      * @param array  $substitutions Optional substitutions.
      */

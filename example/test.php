@@ -25,8 +25,8 @@ $parser->setSubstitution('name', 'Nathan Fiscaletti');
 // Anytime you reference `$this` in your code blocks
 // within the template, this bound object will be
 // referenced.
-$bindTest = (object)[
-    'bound' => 'Yes, Bound.'
+$bindTest = (object) [
+    'bound' => 'Yes, Bound.',
 ];
 $parser->bindTo($bindTest);
 
@@ -34,7 +34,7 @@ $parser->bindTo($bindTest);
 // When the return value is an integer or
 // a string, it will be directly substituted.
 // Otherwise, the value will be used.
-$parser->setSubstitution('likes', function() {
+$parser->setSubstitution('likes', function () {
     return ['Coding', 'PHP', 'Trial by Combat'];
 });
 

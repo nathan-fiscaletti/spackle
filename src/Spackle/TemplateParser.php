@@ -4,16 +4,16 @@ namespace Spackle;
 
 /**
  * Regex Patterns for Parsing (Parsed in this order):
-    Substitution: /(?!>|url)(?<={{)(.*)(?=}})(?!<|url)/Us (Group 1)
-    Code Block: /(?<={{)(>)(.*).(<)(?=}})/Us              (Group 2)
+ * Substitution: /(?!>|url)(?<={{)(.*)(?=}})(?!<|url)/Us (Group 1)
+ * Code Block: /(?<={{)(>)(.*).(<)(?=}})/Us              (Group 2).
  */
 class TemplateParser
-{   
+{
     /**
      * The content that is being or is about to be
      * parsed, as well as the content that will
      * be returned after parsing.
-     * 
+     *
      * @var string
      */
     private $content;
@@ -21,7 +21,7 @@ class TemplateParser
     /**
      * These are the currently active substitutions
      * for this TemplateParser.
-     * 
+     *
      * @var array
      */
     private $substitutions;
@@ -30,31 +30,31 @@ class TemplateParser
      * The substitution definitons are used
      * when accessing a substitution within
      * a code block.
-     * 
+     *
      * @var array
      */
     private $substitution_definitions = [];
 
     /**
      * The currently active parser.
-     * 
+     *
      * This is nessecary in order to access it from
      * evald code in code blocks.
-     * 
+     *
      * @var \Spackle\TemplateParser
      */
     public static $current_parser;
 
     /**
      * The object that this Parser is bound to.
-     * 
+     *
      * @var mixed
      */
     public $currently_bound_object;
 
     /**
      * Construct the TemplateParser.
-     * 
+     *
      * @param string $content       The content to parse.
      * @param array  $substitutions Option substitutions.
      */
@@ -66,7 +66,7 @@ class TemplateParser
 
     /**
      * Set a substitution for the parser.
-     * 
+     *
      * @param string $substitution The substitution key.
      * @param mixed  $value        The value to apply.
      */
@@ -77,7 +77,7 @@ class TemplateParser
 
     /**
      * Bind this parser to a specific object.
-     * 
+     *
      * @param object &$object
      */
     public function bindTo(&$object)
@@ -87,7 +87,7 @@ class TemplateParser
 
     /**
      * Parse the Template.
-     * 
+     *
      * @return string
      */
     public function parse()
@@ -95,7 +95,7 @@ class TemplateParser
         self::$current_parser = $this;
         $this->parseSubstitutions();
         $this->parseCodeBlocks();
-        
+
         return $this->content;
     }
 
@@ -108,15 +108,14 @@ class TemplateParser
         $matches = [];
         preg_match_all('/(?!>|url)(?<={{)(.*)(?=}})(?!<|url)/Us', $output, $matches);
         
-        foreach ($matches[0] as $substitution)
-        {
+        foreach ($matches[0] as $substitution) {
             if (strpos($output, '{{'.$substitution.'}}') !== false) {
                 $result = $this->substitutions[$substitution];
                 if ($result instanceof \Closure) {
                     $callback = $this->substitutions[$substitution];
                     $callback = $callback->bindTo($this);
                     $result = $callback();
-                } 
+                }
 
                 if (is_string($result) || is_numeric($result)) {
                     $output = str_replace(
@@ -177,9 +176,9 @@ class TemplateParser
     /**
      * Used to retrieve substitution definitions for
      * substitutions that are within codeblocks.
-     * 
+     *
      * @param string $parameter
-     * 
+     *
      * @return mixed
      */
     public function __get($parameter)
