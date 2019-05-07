@@ -1,0 +1,18 @@
+<h4>Welcome to Spackle!</h4>
+
+Spackle was created by <a href="{{github_url}}" target="_blank">{{name}}</a>.<br />
+
+Some things that {{name}} likes are:<br />
+<ul>
+
+{{> 
+    foreach ({{likes}} as $likeable) {
+        echo '<li>';
+        echo $likeable;
+        echo '</li>';
+    }
+<}}
+
+</ul>
+
+<b>Bound: {{> echo $this->bound; <}}
