@@ -9,7 +9,7 @@ class CodeBlockParser extends Plugin
     /**
      * The current parser for this CodeBlockParser.
      * Used during the eval of the code.
-     * 
+     *
      * @var \Spackle\TemplateParser
      */
     public static $current_parser;
@@ -44,7 +44,7 @@ class CodeBlockParser extends Plugin
         $bound = str_replace('$this', '\Spackle\Plugins\CodeBlockParser::$current_parser', $data);
         if (
             ! is_null(
-                CodeBlockParser::$current_parser->currently_bound_object
+                self::$current_parser->currently_bound_object
             )
         ) {
             $bound = str_replace(

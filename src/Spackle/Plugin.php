@@ -2,13 +2,13 @@
 
 namespace Spackle;
 
-use \Spackle\Plugins\CodeBlockParser;
+use Spackle\Plugins\CodeBlockParser;
 
 abstract class Plugin
 {
     /**
      * The current parser for this Plugin.
-     * 
+     *
      * @var \Spackle\TemplateParser
      */
     protected $parser;
@@ -35,7 +35,7 @@ abstract class Plugin
      *
      * @return string
      */
-    public abstract function parse($data);
+    abstract public function parse($data);
 
     /**
      * Set the parser for the Plugin.
@@ -49,14 +49,14 @@ abstract class Plugin
 
     /**
      * The current plugins loaded for Spackle.
-     * 
+     *
      * @var array[\Spackle\Plugin]
      */
     private static $plugins = [];
 
     /**
      * Add a plugin.
-     * 
+     *
      * @param \Spackle\Plugin $plugin
      */
     public static function add($plugin)
@@ -85,7 +85,7 @@ abstract class Plugin
 
     /**
      * Retrieve the current plugins.
-     * 
+     *
      * @return array[\Spackle\Plugin]
      */
     public static function plugins()
@@ -103,12 +103,11 @@ abstract class Plugin
      */
     public static function getIgnoredKeys($position)
     {
-        $ignored = ($position == 'start') ? ">" : "<";
-        foreach (self::plugins() as $plugin)
-        {
-            $ignored .= '|'.(($position == 'start')?$plugin->start_key:$plugin->end_key);
+        $ignored = ($position == 'start') ? '>' : '<';
+        foreach (self::plugins() as $plugin) {
+            $ignored .= '|'.(($position == 'start') ? $plugin->start_key : $plugin->end_key);
         }
-        
+
         return $ignored;
     }
 }
