@@ -220,8 +220,8 @@ class TemplateParser
     private function plugins()
     {
         return array_merge(
-            Plugin::plugins(),
-            $this->plugins
+            $this->plugins,
+            Plugin::plugins()
         );
     }
 
