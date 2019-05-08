@@ -28,7 +28,7 @@ class TemplateParser
 
     /**
      * List of plugins for this parser.
-     * 
+     *
      * @var array[\Spackle\Plugin]
      */
     private $plugins = [];
@@ -212,7 +212,7 @@ class TemplateParser
 
     /**
      * Retrieve the current plugins.
-     * 
+     *
      * @return array[\Spackle\Plugin]
      */
     private function plugins()
@@ -232,11 +232,10 @@ class TemplateParser
     private function getIgnoredKeys($position)
     {
         $ignored = Plugin::getIgnoredKeys($position);
-        foreach ($this->plugins() as $plugin)
-        {
-            $ignored .= '|'.(($position == 'start')?$plugin->start_key:$plugin->end_key);
+        foreach ($this->plugins() as $plugin) {
+            $ignored .= '|'.(($position == 'start') ? $plugin->start_key : $plugin->end_key);
         }
-        
+
         return $ignored;
     }
 
