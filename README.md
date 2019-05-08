@@ -36,7 +36,7 @@ Substitutions will be replaced based on the configuration of their Parser.
 </body>
 ```
 
-You can also use Substitutions within code blocks.
+Code blocks are always parsed last, this way you can use substitutions and other plugins within code blocks.
 
 ```php
 <ul>
