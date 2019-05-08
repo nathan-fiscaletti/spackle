@@ -50,6 +50,36 @@ Code blocks are always parsed last, this way you can use substitutions and other
 </ul>
 ```
 
+### Plugins
+
+> Plugin Notation: `{{key ... <}}`
+
+You can create your own plugins to parse custom template keys.
+> See [./src/Spackle/Plugins/CodeBlockParser.php](CodeBlockParser.php) for an example of a plugin.
+
+```php
+class MyPlugin extends \Spackle\Plugin
+{
+    // The key used to notate the beginning of this element.
+    public $key = 'url';
+
+    // Parse each element found matching this plugin.
+    // {{url some/data <}} woud come out to https://localhost/some/data
+    public function parse($data)
+    {
+        return 'https://localhost/'.$data;
+    }
+}
+
+. . .
+
+// Add on a global scope
+\Spackle\Plugin::add(new MyPlugin());
+
+// Add to a specific parser
+$parser->addPlugin(new MyPlugin());
+```
+
 ## Parsing Templates
 
 Once you've created a template, you can parse it in PHP. To parse the template you need to create an instance of `\Spackle\TemplateParser`. In the following example, we will use the `\Spackle\FileParser` class. It is a subclass of the `TemplateParser`, the only difference being that it loads the contents of a file in instead of using a string.
@@ -139,34 +169,6 @@ Bound: Yes, Bound.
 ```
 
 > (You can find this example in [./example/](./example/)
-
-## Plugins
-
-You can create your own plugins to parse custom template keys.
-> See [./src/Spackle/Plugins/CodeBlockParser.php](CodeBlockParser.php) for an example of a plugin.
-
-```php
-class MyPlugin extends \Spackle\Plugin
-{
-    // The key used to notate the beginning of this element.
-    public $key = 'url';
-
-    // Parse each element found matching this plugin.
-    // {{url some/data <}} woud come out to https://localhost/some/data
-    public function parse($data)
-    {
-        return 'https://localhost/'.$data;
-    }
-}
-
-. . .
-
-// Add on a global scope
-\Spackle\Plugin::add(new MyPlugin());
-
-// Add to a specific parser
-$parser->addPlugin(new MyPlugin());
-```
 
 ## Why stop there?
 
