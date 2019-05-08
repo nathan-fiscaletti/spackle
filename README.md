@@ -140,6 +140,36 @@ Bound: Yes, Bound.
 
 > (You can find this example in [./example/](./example/)
 
+## Plugins
+
+You can create your own plugins to parse custom template keys.
+
+```php
+class MyPlugin extends \Spackle\Plugin
+{
+    // The key used to notate the beginning of this element.
+    public $start_key = 'url';
+
+    // The key used to notate the end of this element.
+    public $end_key = 'url';
+
+    // Parse each element found matching this plugin.
+    // {{url some/data url}} woud come out to https://localhost/some/data
+    public function parse($data)
+    {
+        return 'https://localhost/'.$data;
+    }
+}
+
+. . .
+
+// Add on a global scope
+\Spackle\Plugin::add(new MyPlugin());
+
+// Add to a specific parser
+$parser->addPlugin(new MyPlugin());
+```
+
 ## Why stop there?
 
 You can use Spackle for any file type you want, since it's a glorified regex matcher.

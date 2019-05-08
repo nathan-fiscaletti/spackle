@@ -36,7 +36,21 @@ $parser->bindTo($bindTest);
 // Otherwise, the value will be used.
 $parser->setSubstitution('likes', function () {
     return ['Coding', 'PHP', 'Trial by Combat'];
-});
+})
+
+// Add a custom plugin to parse URLs.
+->addPlugin(
+    new class extends \Spackle\Plugin
+    {
+        public $start_key = 'url';
+        public $end_key = 'url';
+
+        public function parse($data)
+        {
+            return 'https://localhost/'.$data;
+        }
+    }
+);
 
 // The ->parse() function will parse the template
 // and return the parsed value.

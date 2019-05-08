@@ -13,6 +13,8 @@ Some things that {{name}} likes are:<br />
     }
 <}}
 
+This page can be found at {{url example/test.php url}}
+
 </ul>
 
 <b>Bound: {{> echo $this->bound; <}}

@@ -27,6 +27,13 @@ class TemplateParser
     private $substitutions;
 
     /**
+     * List of plugins for this parser.
+     * 
+     * @var array[\Spackle\Plugin]
+     */
+    private $plugins = [];
+
+    /**
      * The substitution definitons are used
      * when accessing a substitution within
      * a code block.
@@ -69,20 +76,28 @@ class TemplateParser
      *
      * @param string $substitution The substitution key.
      * @param mixed  $value        The value to apply.
+     *
+     * @return \Spackle\TemplateParser
      */
     public function setSubstitution($substitution, $value)
     {
         $this->substitutions[$substitution] = $value;
+
+        return $this;
     }
 
     /**
      * Bind this parser to a specific object.
      *
      * @param object &$object
+     *
+     * @return \Spackle\TemplateParser
      */
     public function bindTo(&$object)
     {
         $this->currently_bound_object = $object;
+
+        return $this;
     }
 
     /**
@@ -94,7 +109,23 @@ class TemplateParser
     {
         self::$current_parser = $this;
         $this->parseSubstitutions();
-        $this->parseCodeBlocks();
+
+        foreach ($this->plugins() as $plugin) {
+            $plugin->setParser($this);
+            $output = $this->content;
+            $matches = [];
+            preg_match_all('/(?<={{)('.$plugin->start_key.')(.*).('.$plugin->end_key.')(?=}})/Us', $output, $matches);
+            foreach ($matches[2] as $match_id => $data) {
+                $result = $plugin->parse(trim($data));
+                $output = str_replace(
+                    '{{'.$matches[0][$match_id].'}}',
+                    $result,
+                    $output
+                );
+            }
+
+            $this->content = $output;
+        }
 
         return $this->content;
     }
@@ -106,7 +137,9 @@ class TemplateParser
     {
         $output = $this->content;
         $matches = [];
-        preg_match_all('/(?!>|url)(?<={{)(.*)(?=}})(?!<|url)/Us', $output, $matches);
+        $startignored = $this->getIgnoredKeys('start');
+        $endignored = $this->getIgnoredKeys('end');
+        preg_match_all('/(?!'.$startignored.')(?<={{)(.*)(?=}})(?!'.$endignored.')/Us', $output, $matches);
 
         foreach ($matches[0] as $substitution) {
             if (strpos($output, '{{'.$substitution.'}}') !== false) {
@@ -145,32 +178,66 @@ class TemplateParser
     }
 
     /**
-     * Parse all Code Blocks.
+     * Add a plugin.
+     *
+     * @param \Spackle\Plugin $plugin
+     *
+     * @return \Spackle\TemplateParser
      */
-    private function parseCodeBlocks()
+    public function addPlugin($plugin)
     {
-        $output = $this->content;
-        $matches = [];
-        preg_match_all('/(?<={{)(>)(.*).(<)(?=}})/Us', $output, $matches);
-
-        foreach ($matches[2] as $match_id => $code) {
-            ob_start();
-            $bound = str_replace('$this', '\Spackle\TemplateParser::$current_parser', $code);
-            if (! is_null($this->currently_bound_object)) {
-                $bound = str_replace('$this', '\Spackle\TemplateParser::$current_parser->currently_bound_object', $code);
-            }
-            @eval($bound);
-            $result = ob_get_contents();
-            ob_end_clean();
-
-            $output = str_replace(
-                '{{'.$matches[0][$match_id].'}}',
-                $result,
-                $output
+        if (! ($plugin instanceof \Spackle\Plugin)) {
+            throw new \Exception(
+                'Attempting to add a plugin to Spackle '.
+                'that does not extend \Spackle\Plugin.'
             );
         }
 
-        $this->content = $output;
+        foreach ($this->plugins() as $plugin_existing) {
+            if (
+                $plugin->start_key == $plugin_existing->start_key &&
+                $plugin->end_key == $plugin_existing->end_key
+            ) {
+                throw new \Exception(
+                    'Attempting to add a plugin to Spackle '.
+                    'with a start and end key that\'s already defined.'
+                );
+            }
+        }
+
+        $this->plugins[] = $plugin;
+
+        return $this;
+    }
+
+    /**
+     * Retrieve the current plugins.
+     * 
+     * @return array[\Spackle\Plugin]
+     */
+    private function plugins()
+    {
+        return array_merge(
+            Plugin::plugins(),
+            $this->plugins
+        );
+    }
+
+    /**
+     * Retrieve all start/end keys for the plugins,
+     * formatted for usage in regex.
+     *
+     * @return string
+     */
+    private function getIgnoredKeys($position)
+    {
+        $ignored = Plugin::getIgnoredKeys($position);
+        foreach ($this->plugins() as $plugin)
+        {
+            $ignored .= '|'.(($position == 'start')?$plugin->start_key:$plugin->end_key);
+        }
+        
+        return $ignored;
     }
 
     /**
