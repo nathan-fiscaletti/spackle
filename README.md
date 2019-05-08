@@ -149,7 +149,7 @@ You can create your own plugins to parse custom template keys.
 class MyPlugin extends \Spackle\Plugin
 {
     // The key used to notate the beginning of this element.
-    public $start_key = 'url';
+    public $key = 'url';
 
     // Parse each element found matching this plugin.
     // {{url some/data <}} woud come out to https://localhost/some/data
