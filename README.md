@@ -55,7 +55,7 @@ Code blocks are always parsed last, this way you can use substitutions and other
 > Plugin Notation: `{{key ... <}}`
 
 You can create your own plugins to parse custom template keys.
-> See [./src/Spackle/Plugins/CodeBlockParser.php](CodeBlockParser.php) for an example of a plugin.
+> See [CodeBlockParser.php](./src/Spackle/Plugins/CodeBlockParser.php) for an example of a plugin.
 
 ```php
 class MyPlugin extends \Spackle\Plugin
