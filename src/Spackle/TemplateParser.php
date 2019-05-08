@@ -121,7 +121,7 @@ class TemplateParser
                 if (! (is_string($result) || is_numeric($result) || is_array($result))) {
                     if (is_bool($result)) {
                         $result = ($result) ? 'true' : 'false';
-                    } else if (empty($result)) {
+                    } elseif (empty($result)) {
                         $result = 'null';
                     }
                 }
