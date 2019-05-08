@@ -117,6 +117,15 @@ class TemplateParser
             preg_match_all('/(?<={{)('.$plugin->key.')(.*).(<)(?=}})/Us', $output, $matches);
             foreach ($matches[2] as $match_id => $data) {
                 $result = $plugin->parse(trim($data));
+
+                if (! (is_string($result) || is_numeric($result) || is_array($result))) {
+                    if (is_bool($result)) {
+                        $result = ($result) ? 'true' : 'false';
+                    } else if (empty($result)) {
+                        $result = 'null';
+                    }
+                }
+
                 $output = str_replace(
                     '{{'.$matches[0][$match_id].'}}',
                     $result,
