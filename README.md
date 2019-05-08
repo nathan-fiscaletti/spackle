@@ -143,6 +143,7 @@ Bound: Yes, Bound.
 ## Plugins
 
 You can create your own plugins to parse custom template keys.
+> See [./src/Spackle/Plugins/CodeBlockParser.php](CodeBlockParser.php) for an example of a plugin.
 
 ```php
 class MyPlugin extends \Spackle\Plugin
@@ -150,11 +151,8 @@ class MyPlugin extends \Spackle\Plugin
     // The key used to notate the beginning of this element.
     public $start_key = 'url';
 
-    // The key used to notate the end of this element.
-    public $end_key = 'url';
-
     // Parse each element found matching this plugin.
-    // {{url some/data url}} woud come out to https://localhost/some/data
+    // {{url some/data <}} woud come out to https://localhost/some/data
     public function parse($data)
     {
         return 'https://localhost/'.$data;

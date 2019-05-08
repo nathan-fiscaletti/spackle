@@ -114,7 +114,7 @@ class TemplateParser
             $plugin->setParser($this);
             $output = $this->content;
             $matches = [];
-            preg_match_all('/(?<={{)('.$plugin->start_key.')(.*).('.$plugin->end_key.')(?=}})/Us', $output, $matches);
+            preg_match_all('/(?<={{)('.$plugin->key.')(.*).(<)(?=}})/Us', $output, $matches);
             foreach ($matches[2] as $match_id => $data) {
                 $result = $plugin->parse(trim($data));
                 $output = str_replace(
@@ -137,16 +137,19 @@ class TemplateParser
     {
         $output = $this->content;
         $matches = [];
-        $startignored = $this->getIgnoredKeys('start');
-        $endignored = $this->getIgnoredKeys('end');
-        preg_match_all('/(?!'.$startignored.')(?<={{)(.*)(?=}})(?!'.$endignored.')/Us', $output, $matches);
+        $ignored = $this->getIgnoredKeys();
+        preg_match_all('/(?!'.$ignored.')(?<={{)(.*)(?=}})(?!<)/Us', $output, $matches);
 
         foreach ($matches[0] as $substitution) {
             if (strpos($output, '{{'.$substitution.'}}') !== false) {
                 $result = $this->substitutions[$substitution];
                 if ($result instanceof \Closure) {
                     $callback = $this->substitutions[$substitution];
-                    $callback = $callback->bindTo($this);
+                    $callback = $callback->bindTo(
+                        is_null($this->currently_bound_object)
+                            ? $this
+                            : $this->currently_bound_object
+                    );
                     $result = $callback();
                 }
 
@@ -195,12 +198,11 @@ class TemplateParser
 
         foreach ($this->plugins() as $plugin_existing) {
             if (
-                $plugin->start_key == $plugin_existing->start_key &&
-                $plugin->end_key == $plugin_existing->end_key
+                $plugin->key == $plugin_existing->key
             ) {
                 throw new \Exception(
                     'Attempting to add a plugin to Spackle '.
-                    'with a start and end key that\'s already defined.'
+                    'with a key that\'s already defined.'
                 );
             }
         }
@@ -229,11 +231,11 @@ class TemplateParser
      *
      * @return string
      */
-    private function getIgnoredKeys($position)
+    private function getIgnoredKeys()
     {
-        $ignored = Plugin::getIgnoredKeys($position);
+        $ignored = '';
         foreach ($this->plugins() as $plugin) {
-            $ignored .= '|'.(($position == 'start') ? $plugin->start_key : $plugin->end_key);
+            $ignored .= (($ignored == '') ? '' : '|').$plugin->key;
         }
 
         return $ignored;

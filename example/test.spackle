@@ -13,7 +13,7 @@ Some things that {{name}} likes are:<br />
     }
 <}}
 
-This page can be found at {{url example/test.php url}}
+This page can be found at {{url example/test.php <}}
 
 </ul>
 

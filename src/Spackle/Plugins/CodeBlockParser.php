@@ -19,14 +19,7 @@ class CodeBlockParser extends Plugin
      *
      * @var string
      */
-    public $start_key = '>';
-
-    /**
-     * The key used to notate the end of this element.
-     *
-     * @var string
-     */
-    public $end_key = '<';
+    public $key = '>';
 
     /**
      * Parse the data the the element found matching

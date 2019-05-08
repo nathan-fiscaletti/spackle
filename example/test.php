@@ -41,8 +41,7 @@ $parser->setSubstitution('likes', function () {
 // Add a custom plugin to parse URLs.
 ->addPlugin(
     new class extends \Spackle\Plugin {
-        public $start_key = 'url';
-        public $end_key = 'url';
+        public $key = 'url';
 
         public function parse($data)
         {

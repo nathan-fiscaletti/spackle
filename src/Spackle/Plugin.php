@@ -18,14 +18,7 @@ abstract class Plugin
      *
      * @var string
      */
-    public $start_key = '';
-
-    /**
-     * The key used to notate the end of this element.
-     *
-     * @var string
-     */
-    public $end_key = '';
+    public $key = '';
 
     /**
      * Parse the data the the element found matching
@@ -70,12 +63,11 @@ abstract class Plugin
 
         foreach (self::plugins() as $plugin_existing) {
             if (
-                $plugin->start_key == $plugin_existing->start_key &&
-                $plugin->end_key == $plugin_existing->end_key
+                $plugin->key == $plugin_existing->key
             ) {
                 throw new \Exception(
                     'Attempting to add a plugin to Spackle '.
-                    'with a start and end key that\'s already defined.'
+                    'with key that\'s already defined.'
                 );
             }
         }
@@ -101,11 +93,11 @@ abstract class Plugin
      *
      * @return string
      */
-    public static function getIgnoredKeys($position)
+    public static function getIgnoredKeys()
     {
-        $ignored = ($position == 'start') ? '>' : '<';
+        $ignored = '';
         foreach (self::plugins() as $plugin) {
-            $ignored .= '|'.(($position == 'start') ? $plugin->start_key : $plugin->end_key);
+            $ignored .= (($ignored == '') ? '' : '|').$plugin->key;
         }
 
         return $ignored;
