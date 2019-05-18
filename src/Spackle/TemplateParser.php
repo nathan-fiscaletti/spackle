@@ -150,7 +150,10 @@ class TemplateParser
         preg_match_all('/(?!'.$ignored.')(?<={{)(.*)(?=}})(?!<)/Us', $output, $matches);
 
         foreach ($matches[0] as $substitution) {
-            if (strpos($output, '{{'.$substitution.'}}') !== false) {
+            if (
+                strpos($output, '{{'.$substitution.'}}') !== false &&
+                array_key_exists($substitution, $this->substitutions)
+            ) {
                 $result = $this->substitutions[$substitution];
                 if ($result instanceof \Closure) {
                     $callback = $this->substitutions[$substitution];
