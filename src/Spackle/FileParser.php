@@ -12,11 +12,11 @@ class FileParser extends TemplateParser
      */
     public function __construct($file, $substitutions = [])
     {
-        if (! file_exists($file)) {
+        if (!file_exists($file)) {
             throw new \Exception('Missing template file: '.$file);
         }
 
-        if (! is_readable($file)) {
+        if (!is_readable($file)) {
             throw new \Exception('Template file is not readable: '.$file);
         }
 
