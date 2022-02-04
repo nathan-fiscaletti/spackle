@@ -118,7 +118,7 @@ class TemplateParser
             foreach ($matches[2] as $match_id => $data) {
                 $result = $plugin->parse(trim($data));
 
-                if (! (is_string($result) || is_numeric($result) || is_array($result))) {
+                if (!(is_string($result) || is_numeric($result) || is_array($result))) {
                     if (is_bool($result)) {
                         $result = ($result) ? 'true' : 'false';
                     } elseif (empty($result)) {
@@ -201,7 +201,7 @@ class TemplateParser
      */
     public function addPlugin($plugin)
     {
-        if (! ($plugin instanceof \Spackle\Plugin)) {
+        if (!($plugin instanceof \Spackle\Plugin)) {
             throw new \Exception(
                 'Attempting to add a plugin to Spackle '.
                 'that does not extend \Spackle\Plugin.'

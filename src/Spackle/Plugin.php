@@ -54,7 +54,7 @@ abstract class Plugin
      */
     public static function add($plugin)
     {
-        if (! ($plugin instanceof \Spackle\Plugin)) {
+        if (!($plugin instanceof \Spackle\Plugin)) {
             throw new \Exception(
                 'Attempting to add a plugin to Spackle '.
                 'that does not extend \Spackle\Plugin.'

@@ -36,7 +36,7 @@ class CodeBlockParser extends Plugin
         ob_start();
         $bound = str_replace('$this', '\Spackle\Plugins\CodeBlockParser::$current_parser', $data);
         if (
-            ! is_null(
+            !is_null(
                 self::$current_parser->currently_bound_object
             )
         ) {
