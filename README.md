@@ -1,6 +1,7 @@
 # Spackle
 > A simple templating engine for PHP
 
+[![Sponsor Me!](https://img.shields.io/badge/%F0%9F%92%B8-Sponsor%20Me!-blue)](https://github.com/sponsors/nathan-fiscaletti)
 [![StyleCI](https://styleci.io/repos/185454892/shield?style=flat)](https://styleci.io/repos/185454892)
 [![Total Downloads](https://poser.pugx.org/nafisc/spackle/downloads?format=flat)](https://packagist.org/packages/nafisc/spackle)
 [![Latest Stable Version](https://poser.pugx.org/nafisc/spackle/v/stable?format=flat)](https://packagist.org/packages/nafisc/spackle)
